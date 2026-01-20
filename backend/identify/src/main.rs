@@ -1,5 +1,6 @@
 use axum::{Router, routing::get};
-use identify::{Result, logging};
+use identify::logging;
+use identify_core::Result;
 use tracing::info;
 
 #[tokio::main]

@@ -1,5 +1,5 @@
-use crate::Result;
 use eyre::eyre;
+use identify_core::{Error, Result};
 use tracing_subscriber::EnvFilter;
 
 pub const LOGGING_ENV: &str = "IDENTIFY_LOG";
@@ -16,5 +16,10 @@ pub fn init() -> Result<()> {
         .with_line_number(true)
         .with_env_filter(env_filter)
         .try_init()
-        .map_err(|e| eyre!("error while initializing the logging: {}", e))
+        .map_err(|e| {
+            Error::internal_with_message(
+                eyre!(e),
+                "error while initializing the logging",
+            )
+        })
 }

@@ -1,0 +1,14 @@
+[package]
+name = "identify-core"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+eyre = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+identify-macros = { workspace = true }
+
+[lints]
+workspace = true

@@ -1,11 +1,22 @@
-[package]
-name = "identify"
-version = "0.1.0"
-edition = "2024"
+[workspace]
+resolver = "3"
+members = ["identify", "identify-core", "identify-macros"]
+default-members = ["identify"]
 
-[dependencies]
+[workspace.dependencies]
 axum = { version = "0.8.8" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
 eyre = "0.6.12"
+identify-core = { path = "./identify-core" }
+identify-macros = { path = "./identify-macros" }
+thiserror = "2.0.17"
+uuid = { version = "1.19.0", features = ["v5"] }
+chrono = "0.4.42"
+
+[profile.release]
+lto = "fat"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
