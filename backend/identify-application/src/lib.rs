@@ -16,9 +16,7 @@ pub enum ApplicationError {
     #[error("Internal error: {0}")]
     Internal(eyre::Report),
 
-    #[error(
-        "Failed to create an entity of type {entity} because it already exists: {message}"
-    )]
+    #[error("Failed to create an entity of type {entity}: {message}")]
     EntityAlreadyExists { entity: String, message: String },
 }
 

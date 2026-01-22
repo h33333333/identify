@@ -737,7 +737,6 @@ name = "identify-application"
 version = "0.1.0"
 dependencies = [
  "async-trait",
- "chrono",
  "eyre",
  "identify-domain",
  "thiserror",
@@ -749,12 +748,9 @@ dependencies = [
 name = "identify-domain"
 version = "0.1.0"
 dependencies = [
- "async-trait",
  "chrono",
- "eyre",
  "identify-macros",
  "thiserror",
- "tracing",
  "uuid",
 ]
 
@@ -770,7 +766,6 @@ dependencies = [
  "sqlx",
  "thiserror",
  "tokio",
- "tracing",
  "uuid",
 ]
 
