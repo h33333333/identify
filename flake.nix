@@ -30,6 +30,8 @@
         devShells.default = mkShell {
           packages = with pkgs; [
             (rust-bin.fromRustupToolchainFile ./backend/rust-toolchain.toml)
+            sqlx-cli
+            cargo-machete
           ];
           shellHook = ''
             if command -v zsh &> /dev/null; then

@@ -1,0 +1,50 @@
+{
+  "db_name": "SQLite",
+  "query": "\n                select\n                    id as \"id: Uuid\",\n                    email,\n                    first_name,\n                    last_name,\n                    created_at as \"created_at: _\",\n                    updated_at as \"updated_at: _\"\n                from\n                    users\n                where\n                    id = (?)\n            ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "email",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "first_name",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "last_name",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "created_at: _",
+        "ordinal": 4,
+        "type_info": "Datetime"
+      },
+      {
+        "name": "updated_at: _",
+        "ordinal": 5,
+        "type_info": "Datetime"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+    ]
+  },
+  "hash": "26b6268cebf22a2a9b195fddb094c99b2137e0f1dfeec2886ecd5a9d58239ed0"
+}

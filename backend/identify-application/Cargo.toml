@@ -1,0 +1,16 @@
+[package]
+name = "identify-application"
+description = "This crate contains application-level logic for Identify"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+eyre = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true }
+identify-domain = { workspace = true }
+async-trait = { workspace = true }
+tracing = { workspace = true }
+
+[lints]
+workspace = true

@@ -1,8 +1,8 @@
 use identify_macros::gen_id;
 use uuid::Uuid;
 
-use crate::models::UUID_NAMESPACE;
-use crate::{Error, Result};
+use crate::entities::UUID_NAMESPACE;
+use crate::{DomainError, Result};
 
 gen_id! {
     UUID_NAMESPACE,
@@ -28,7 +28,7 @@ impl UserId {
         let generated = id.to_uuid();
 
         if generated != expected {
-            return Err(Error::id_mismatch(
+            return Err(DomainError::id_mismatch(
                 "UserId",
                 format!("expected {}, got {}", expected, generated),
             ));

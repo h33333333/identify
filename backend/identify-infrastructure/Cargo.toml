@@ -1,0 +1,19 @@
+[package]
+name = "identify-infrastructure"
+description = "This crate contains infrastructure-level logic for Identify"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tokio = { workspace = true }
+eyre = { workspace = true }
+thiserror = { workspace = true }
+uuid = { workspace = true }
+chrono = { workspace = true }
+async-trait = { workspace = true }
+sqlx = { workspace = true }
+identify-application = { workspace = true }
+identify-domain = { workspace = true }
+
+[lints]
+workspace = true

@@ -1,11 +1,11 @@
 use axum::{Router, routing::get};
+use eyre::{Context, Result};
 use identify::logging;
-use identify_core::Result;
 use tracing::info;
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    logging::init()?;
+    logging::init().wrap_err("error while initializing the logging")?;
 
     info!("Initializing");
 

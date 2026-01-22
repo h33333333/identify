@@ -1,6 +1,6 @@
 pub mod id;
 
-use crate::{Result, models::user::id::UserIdAttrs};
+use crate::{Result, entities::user::id::UserIdAttrs};
 use chrono::{DateTime, Utc};
 use id::UserId;
 use identify_macros::gen_model;
@@ -24,11 +24,13 @@ gen_model! {
         updated_at: DateTime<Utc>,
     }
 
+    #[derive(Debug)]
     pub struct NewUserAttrs {
         /// Email of the user that uniquely identifies them within the system.
         email: String,
     }
 
+    #[derive(Debug)]
     pub struct UserAttrs {
         /// Email of the user that uniquely identifies them within the system.
         email: String,
@@ -55,5 +57,16 @@ impl User {
             created_at: attrs.created_at,
             updated_at: attrs.updated_at,
         })
+    }
+
+    pub fn to_attributes(&self) -> UserAttrs {
+        UserAttrs {
+            id: self.id(),
+            email: self.id.email().to_owned(),
+            first_name: self.first_name.clone(),
+            last_name: self.last_name.clone(),
+            created_at: self.created_at,
+            updated_at: self.updated_at,
+        }
     }
 }

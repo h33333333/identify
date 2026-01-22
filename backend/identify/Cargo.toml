@@ -9,7 +9,6 @@ tokio = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 eyre = { workspace = true }
-identify-core = { workspace = true }
 
 [lints]
 workspace = true
