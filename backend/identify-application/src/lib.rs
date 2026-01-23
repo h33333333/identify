@@ -1,8 +1,8 @@
+mod contracts;
 mod use_cases;
 
-pub use use_cases::{
-    CreateUserParams, UserUseCaseDeps, create_user, user_contracts,
-};
+pub use contracts::user as user_contracts;
+pub use use_cases::{CreateUserParams, UserUseCaseDeps, create_user};
 
 use thiserror::Error;
 

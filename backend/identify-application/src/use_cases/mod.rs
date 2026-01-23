@@ -1,5 +1,5 @@
 mod user;
 pub use user::{
-    UserUseCaseDeps, contracts as user_contracts,
+    UserUseCaseDeps,
     create_user::{CreateUserParams, create_user},
 };
