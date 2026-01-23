@@ -29,7 +29,7 @@
       {
         devShells.default = mkShell {
           packages = with pkgs; [
-            (rust-bin.fromRustupToolchainFile ./backend/rust-toolchain.toml)
+            (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
             sqlx-cli
             cargo-machete
           ];
