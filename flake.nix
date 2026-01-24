@@ -32,6 +32,7 @@
             (rust-bin.fromRustupToolchainFile ./rust-toolchain.toml)
             sqlx-cli
             cargo-machete
+            typos
           ];
           shellHook = ''
             if command -v zsh &> /dev/null; then
