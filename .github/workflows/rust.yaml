@@ -24,6 +24,8 @@ jobs:
           components: clippy, rustfmt
 
       - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ./backend
 
       - name: Check
         working-directory: ./backend
@@ -42,6 +44,8 @@ jobs:
       - uses: dtolnay/rust-toolchain@1.92.0
 
       - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ./backend
 
       - name: Test
         working-directory: ./backend
