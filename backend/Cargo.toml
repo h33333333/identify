@@ -15,7 +15,7 @@ identify-macros = { path = "./identify-macros", version = "0.1.0" }
 identify-application = { path = "./identify-application", version = "0.1.0" }
 identify-infrastructure = { path = "./identify-infrastructure", version = "0.1.0" }
 axum = { version = "0.8.8" }
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync"] }
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
 eyre = "0.6.12"
