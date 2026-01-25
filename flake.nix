@@ -33,6 +33,7 @@
             sqlx-cli
             cargo-machete
             typos
+            cargo-deny
           ];
           shellHook = ''
             if command -v zsh &> /dev/null; then

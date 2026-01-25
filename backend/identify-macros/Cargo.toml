@@ -3,6 +3,7 @@ name = "identify-macros"
 description = "This crate contains macroses used in Identify"
 version = "0.1.0"
 edition = "2024"
+publish = false
 
 [lints]
 workspace = true

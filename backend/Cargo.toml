@@ -10,10 +10,10 @@ members = [
 default-members = ["identify"]
 
 [workspace.dependencies]
-identify-domain = { path = "./identify-domain" }
-identify-macros = { path = "./identify-macros" }
-identify-application = { path = "./identify-application" }
-identify-infrastructure = { path = "./identify-infrastructure" }
+identify-domain = { path = "./identify-domain", version = "0.1.0" }
+identify-macros = { path = "./identify-macros", version = "0.1.0" }
+identify-application = { path = "./identify-application", version = "0.1.0" }
+identify-infrastructure = { path = "./identify-infrastructure", version = "0.1.0" }
 axum = { version = "0.8.8" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
 tracing = "0.1.44"
