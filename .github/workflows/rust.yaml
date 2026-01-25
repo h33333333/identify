@@ -1,4 +1,4 @@
-name: Rust
+name: Rust CI
 
 on:
   push:
@@ -18,38 +18,60 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
+
+      - uses: dtolnay/rust-toolchain@1.92.0
         with:
-          components: clippy
+          components: clippy, rustfmt
 
-      - name: Run cargo check
-        working-directory: ./backend
-        run: cargo check --workspace
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ./backend
 
-      - name: Run cargo clippy
+      - name: Check
         working-directory: ./backend
-        run: cargo clippy --workspace -- -D warnings
+        run: cargo clippy --workspace --all-features -- -D warnings
+
+      - name: Formatting
+        working-directory: ./backend
+        run: cargo fmt --all --check
 
   test:
     runs-on: ubuntu-latest
     needs: check
     steps:
       - uses: actions/checkout@v6
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
 
-      - name: Run cargo test
+      - uses: dtolnay/rust-toolchain@1.92.0
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ./backend
+
+      - name: Test
         working-directory: ./backend
         run: cargo test --verbose --workspace
 
-  formatting:
+  detect-unused-dependencies:
     runs-on: ubuntu-latest
-    needs: test
+    needs: check
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Machete
+        uses: bnjbvr/cargo-machete@main
+        with:
+          args: ./backend
+
+  detect-unwanted-deps:
+    runs-on: ubuntu-latest
+    needs: check
     steps:
       - uses: actions/checkout@v6
-      - uses: actions-rust-lang/setup-rust-toolchain@v1
-        with:
-          components: rustfmt
 
-      - name: Run cargo fmt
-        working-directory: ./backend
-        run: cargo fmt --all --check
+      - name: Deny
+        uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          manifest-path: ./backend/Cargo.toml
+          command: check
+          arguments: --workspace --all-features
