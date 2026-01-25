@@ -7,7 +7,7 @@ use tracing::info;
 async fn main() -> Result<()> {
     logging::init().wrap_err("error while initializing the logging")?;
 
-    info!("Initializing");
+    info!("Initializing!");
 
     let app = Router::new().route("/", get(|| async { "Hello, World!" }));
 
