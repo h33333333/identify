@@ -1,3 +1,6 @@
+mod connection;
+pub use connection::get_pool;
+
 use std::sync::Arc;
 
 use sqlx::SqliteTransaction;
