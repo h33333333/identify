@@ -93,6 +93,7 @@
 /// - `#[get(into(<type>))]` - calls `Into::into()` on the field to cast it to the specified type.
 /// - `#[get(ref_into(<type>))]` - calls `Into::into()` on a reference to the field to cast it to the specified type.
 /// - `#[get(as_ref(<type>))]` - calls `AsRef::as_ref()` on the field to borrow the specified type from it.
+/// - `#[get(copy)]` - returns a copy of the field.
 ///
 ///  ⚠️ All provided options are **mutually-exclusive**.
 ///
@@ -167,6 +168,7 @@ macro_rules! gen_model_helper {
                     $(into($into_type:ty))?
                     $(ref_into($ref_into_type:ty))?
                     $(as_ref($as_ref_type:ty))?
+                    $(copy$(($get_copy_marker:tt))?)?
                 )])?
 
                 // Additional options for the new entity creation helper struct field generated from this field.
@@ -228,6 +230,7 @@ macro_rules! gen_model_helper {
                     $(into($into_type))?
                     $(ref_into($ref_into_type))?
                     $(as_ref($as_ref_type))?
+                    $(copy$(($get_copy_marker))?)?
                 )])?
                 $f_name: $f_type,
             )*
@@ -661,6 +664,25 @@ macro_rules! gen_model_helper {
         $vis:vis,
         $(#[doc = $($f_doc:tt)*])*
         $(#[doc($($f_doc2:tt)*)])*
+        #[get(copy)]
+        $f_name:ident: $f_type:ty,
+        $($rest:tt)*
+    ) => {
+        $(#[doc = $($f_doc)*])*
+        $(#[doc($($f_doc2)*)])*
+        $vis fn $f_name(&self) -> $f_type {
+            self.$f_name
+        }
+
+        gen_model_helper!(@gen-getter $vis, $($rest)*);
+    };
+
+    // Return a copy of the field in the getter.
+    (
+        @gen-getter
+        $vis:vis,
+        $(#[doc = $($f_doc:tt)*])*
+        $(#[doc($($f_doc2:tt)*)])*
         #[get(as_ref($as_ref_ty:ty))]
         $f_name:ident: $f_type:ty,
         $($rest:tt)*
@@ -673,6 +695,7 @@ macro_rules! gen_model_helper {
 
         gen_model_helper!(@gen-getter $vis, $($rest)*);
     };
+
 
     // Fallback case when all getters have been generated already.
     (@gen-getter $vis:vis$(,)?) => {};
