@@ -6,4 +6,3 @@ target/
 *.db-*
 *.pub
 *.key
-.sqlx/

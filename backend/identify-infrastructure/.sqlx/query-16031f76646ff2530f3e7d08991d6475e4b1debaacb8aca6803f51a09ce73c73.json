@@ -1,0 +1,44 @@
+{
+  "db_name": "SQLite",
+  "query": "\n                select\n                    id as \"id: Uuid\",\n                    name,\n                    is_privileged,\n                    created_at as \"created_at: _\",\n                    updated_at as \"updated_at: _\"\n                from\n                    groups\n                where\n                    $1 is null or id in (\n                        select\n                            group_id\n                        from\n                            users_groups\n                        where\n                            user_id = $1\n                    )\n            ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "name",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "is_privileged",
+        "ordinal": 2,
+        "type_info": "Bool"
+      },
+      {
+        "name": "created_at: _",
+        "ordinal": 3,
+        "type_info": "Datetime"
+      },
+      {
+        "name": "updated_at: _",
+        "ordinal": 4,
+        "type_info": "Datetime"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "16031f76646ff2530f3e7d08991d6475e4b1debaacb8aca6803f51a09ce73c73"
+}

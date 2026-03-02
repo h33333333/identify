@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "\n                delete from users_groups\n                where\n                        user_id = (?)\n                    and\n                        group_id = (?)\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "e0f68a5a090b8ec07cab428d42d3acca940329149d40ecb5781929578e51192d"
+}

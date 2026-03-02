@@ -1,0 +1,32 @@
+{
+  "db_name": "SQLite",
+  "query": "\n                select\n                    is_initialized,\n                    created_at as \"created_at: _\",\n                    updated_at as \"updated_at: _\"\n                from\n                    system_settings\n                where\n                    id = 1\n            ",
+  "describe": {
+    "columns": [
+      {
+        "name": "is_initialized",
+        "ordinal": 0,
+        "type_info": "Bool"
+      },
+      {
+        "name": "created_at: _",
+        "ordinal": 1,
+        "type_info": "Datetime"
+      },
+      {
+        "name": "updated_at: _",
+        "ordinal": 2,
+        "type_info": "Datetime"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "934f2520702bcc938065d16c4f96eb2d026cfa5725acedaf6d98bee4f615f925"
+}
