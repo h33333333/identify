@@ -1,2 +1,3 @@
-pub mod api;
+pub(crate) mod api;
+pub mod cli;
 pub mod logging;

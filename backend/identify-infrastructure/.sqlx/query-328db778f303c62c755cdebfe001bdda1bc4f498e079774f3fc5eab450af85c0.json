@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "\n                insert into users_groups (\n                    user_id,\n                    group_id\n                ) values (\n                    (?),\n                    (?)\n                )\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "328db778f303c62c755cdebfe001bdda1bc4f498e079774f3fc5eab450af85c0"
+}

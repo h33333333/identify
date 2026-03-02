@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "\n                update\n                    system_settings\n                set\n                    is_initialized = (?),\n                    updated_at = (?)\n                where\n                    id = 1\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "21bc36ba107b370e00adbc2bd4f7ae333f7c7fd7eb353c23bbd4389c58533137"
+}

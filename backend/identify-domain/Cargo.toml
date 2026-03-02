@@ -10,6 +10,8 @@ thiserror = { workspace = true }
 uuid = { workspace = true }
 chrono = { workspace = true }
 identify-macros = { workspace = true }
+identify-util = { workspace = true }
+eyre = { workspace = true }
 
 [lints]
 workspace = true

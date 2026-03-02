@@ -10,6 +10,18 @@ tokio = { workspace = true }
 tracing = { workspace = true }
 tracing-subscriber = { workspace = true }
 eyre = { workspace = true }
+sqlx = { workspace = true }
+identify-macros = { workspace = true }
+identify-infrastructure = { workspace = true }
+identify-application = { workspace = true }
+identify-domain = { workspace = true }
+identify-cache = { workspace = true, features = ["moka"] }
+uuid = { workspace = true }
+chrono = { workspace = true }
+serde = { workspace = true }
+tower = { workspace = true }
+async-trait = { workspace = true }
+clap = { workspace = true }
 
 [lints]
 workspace = true

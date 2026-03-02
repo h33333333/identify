@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "\n                select\n                    id as \"id: Uuid\",\n                    email,\n                    first_name,\n                    last_name,\n                    created_at as \"created_at: _\",\n                    updated_at as \"updated_at: _\"\n                from\n                    users\n                where\n                    id = (?)\n            ",
+  "query": "\n                select\n                    id as \"id: Uuid\",\n                    email,\n                    first_name,\n                    last_name,\n                    password_hash,\n                    created_at as \"created_at: _\",\n                    updated_at as \"updated_at: _\"\n                from\n                    users\n                where\n                    id = (?)\n            ",
   "describe": {
     "columns": [
       {
@@ -24,13 +24,18 @@
         "type_info": "Text"
       },
       {
-        "name": "created_at: _",
+        "name": "password_hash",
         "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "created_at: _",
+        "ordinal": 5,
         "type_info": "Datetime"
       },
       {
         "name": "updated_at: _",
-        "ordinal": 5,
+        "ordinal": 6,
         "type_info": "Datetime"
       }
     ],
@@ -42,9 +47,10 @@
       false,
       false,
       true,
+      true,
       false,
       false
     ]
   },
-  "hash": "26b6268cebf22a2a9b195fddb094c99b2137e0f1dfeec2886ecd5a9d58239ed0"
+  "hash": "26f5d8b5ba5d330ee8f47bab8bbd13b64c1be19d40a793ac744f7ead5e799a53"
 }

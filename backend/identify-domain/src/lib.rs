@@ -1,5 +1,12 @@
 mod entities;
 
+pub use entities::group::{
+    Group, GroupAttrs, NewGroupAttrs,
+    id::{GroupId, GroupIdAttrs},
+};
+pub use entities::system_settings::{
+    NewSystemSettingsAttrs, SystemSettings, SystemSettingsAttrs,
+};
 pub use entities::user::{
     NewUserAttrs, User, UserAttrs,
     id::{UserId, UserIdAttrs},
@@ -18,10 +25,19 @@ pub enum DomainError {
         model: Cow<'static, str>,
         message: Cow<'static, str>,
     },
+
+    #[error("Failed to create an entity of type {entity}: {message}")]
+    EntityAlreadyExists { entity: String, message: String },
+
+    #[error("Internal error: {0}")]
+    Internal(eyre::Report),
+
+    #[error("Requested entity cannot be found")]
+    NotFound,
 }
 
 impl DomainError {
-    pub fn id_mismatch<
+    pub(crate) fn id_mismatch<
         MO: Into<Cow<'static, str>>,
         ME: Into<Cow<'static, str>>,
     >(
@@ -32,5 +48,19 @@ impl DomainError {
             model: model.into(),
             message: message.into(),
         }
+    }
+
+    pub fn entity_already_exists<M: Into<String>>(
+        entity: M,
+        message: M,
+    ) -> Self {
+        Self::EntityAlreadyExists {
+            entity: entity.into(),
+            message: message.into(),
+        }
+    }
+
+    pub fn internal(e: impl Into<eyre::Report>) -> Self {
+        Self::Internal(e.into())
     }
 }

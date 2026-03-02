@@ -4,24 +4,35 @@ members = [
   "identify",
   "identify-domain",
   "identify-macros",
+  "identify-ports",
   "identify-application",
   "identify-infrastructure",
+  "identify-cache",
+  "identify-util",
 ]
 default-members = ["identify"]
 
 [workspace.dependencies]
 identify-domain = { path = "./identify-domain", version = "0.1.0" }
 identify-macros = { path = "./identify-macros", version = "0.1.0" }
+identify-ports = { path = "./identify-ports", version = "0.1.0" }
 identify-application = { path = "./identify-application", version = "0.1.0" }
+identify-cache = { path = "./identify-cache", version = "0.1.0" }
 identify-infrastructure = { path = "./identify-infrastructure", version = "0.1.0" }
+identify-util = { path = "./identify-util", version = "0.1.0" }
 axum = { version = "0.8.8" }
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1", features = [
+  "macros",
+  "rt-multi-thread",
+  "sync",
+  "signal",
+] }
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.22", features = ["env-filter"] }
 eyre = "0.6.12"
 thiserror = "2.0.17"
-uuid = { version = "1.19.0", features = ["v5"] }
-chrono = "0.4.42"
+uuid = { version = "1.19.0", features = ["v5", "serde"] }
+chrono = { version = "0.4.42", features = ["serde"] }
 async-trait = "0.1.89"
 sqlx = { version = "0.8.6", features = [
   "runtime-tokio",
@@ -30,6 +41,12 @@ sqlx = { version = "0.8.6", features = [
   "chrono",
   "uuid",
 ] }
+serde = { version = "1.0.228", features = ["derive"] }
+tower = { version = "0.5.3" }
+jsonwebtoken = { version = "10.2.0", features = ["rust_crypto"] }
+moka = { version = "0.12.13", features = ["future"] }
+argon2 = { version = "0.5.3", features = ["password-hash"] }
+clap = { version = "4.5.60", features = ["env", "derive"] }
 
 [profile.release]
 lto = "fat"

@@ -1,7 +1,8 @@
 use identify_domain::{NewUserAttrs, User};
+use identify_ports::user_contracts;
 use tracing::{instrument, trace};
 
-use crate::{Result, use_cases::user::UserUseCaseDeps, user_contracts};
+use crate::{Result, use_cases::user::UserUseCaseDeps};
 
 #[derive(Debug)]
 pub struct CreateUserParams {

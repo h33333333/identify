@@ -6,12 +6,10 @@ edition = "2024"
 publish = false
 
 [dependencies]
-eyre = { workspace = true }
-thiserror = { workspace = true }
 uuid = { workspace = true }
 identify-domain = { workspace = true }
-async-trait = { workspace = true }
 tracing = { workspace = true }
+identify-ports = { workspace = true }
 
 [lints]
 workspace = true
