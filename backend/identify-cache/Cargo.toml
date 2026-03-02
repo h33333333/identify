@@ -1,0 +1,18 @@
+[package]
+name = "identify-cache"
+description = "This crate contains cache implementation used within Identify"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[dependencies]
+thiserror = { workspace = true }
+async-trait = { workspace = true }
+moka = { workspace = true, optional = true }
+eyre = { workspace = true }
+
+[features]
+moka = ["dep:moka"]
+
+[lints]
+workspace = true

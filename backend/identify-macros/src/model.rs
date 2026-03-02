@@ -28,13 +28,13 @@
 ///     pub struct NewModelAttrs {
 ///         /// We want to parse first name and last name from a concatenated string.
 ///         full_name: String,
-///     }
+///     };
 ///
 ///     // This is the hydration helper with additional field.
 ///     pub struct ModelAttrs {
 ///         /// Concatenated [Model::first_name] and [Model::last_name].
 ///         full_name: String,
-///     }
+///     };
 /// }
 /// ```
 ///
@@ -94,6 +94,8 @@
 /// - `#[get(ref_into(<type>))]` - calls `Into::into()` on a reference to the field to cast it to the specified type.
 /// - `#[get(as_ref(<type>))]` - calls `AsRef::as_ref()` on the field to borrow the specified type from it.
 /// - `#[get(copy)]` - returns a copy of the field.
+/// - `#[get(consume)]` - takes `self` by value and returns the field directly.
+/// - `#[get(clone)]` - clones a field.
 ///
 ///  ⚠️ All provided options are **mutually-exclusive**.
 ///
@@ -156,7 +158,7 @@ macro_rules! gen_model_helper {
     // Main entrypoint.
     (
         $(#[$model_attrs:meta])*
-        $model_vis:vis struct $model_name:ident {
+        $model_vis:vis struct $model_name:ident $(<$($model_lts:lifetime$(,)?)* $($model_generics:ident$(,)?)*>)? {
             $(
                 // Doc comments.
                 $(#[doc = $($f_doc:tt)*])*
@@ -169,6 +171,8 @@ macro_rules! gen_model_helper {
                     $(ref_into($ref_into_type:ty))?
                     $(as_ref($as_ref_type:ty))?
                     $(copy$(($get_copy_marker:tt))?)?
+                    $(consume$(($get_consume_marker:tt))?)?
+                    $(clone$(($get_clone_marker:tt))?)?
                 )])?
 
                 // Additional options for the new entity creation helper struct field generated from this field.
@@ -194,7 +198,7 @@ macro_rules! gen_model_helper {
         //  - And the second one for hydrating an existing entity from a set of attributes.
         $(
             $(#[$helper_attrs:meta])*
-            $helper_vis:vis struct $helper_name:ident$(;)?
+            $helper_vis:vis struct $helper_name:ident $(<$($helper_lts:lifetime$(,)?)* $($helper_generics:ident$(,)?)*>)?
             $(
                 {
                     $(
@@ -203,11 +207,12 @@ macro_rules! gen_model_helper {
                     )*
                 }
             )?
+            ;
         )*
     ) => {
         // Create the model itself.
         $(#[$model_attrs])*
-        $model_vis struct $model_name {
+        $model_vis struct $model_name $(<$($model_lts)* $($model_generics)*>)? {
             // Use all attrs except the ones meant for this macro.
             $(
                 $(#[doc = $($f_doc)*])*
@@ -220,6 +225,7 @@ macro_rules! gen_model_helper {
         // Generate getters.
         gen_model_helper!(
             @gen-getters
+            $(<$($model_lts)* $($model_generics)*>)?,
             $model_vis,
             $model_name,
             $(
@@ -231,6 +237,8 @@ macro_rules! gen_model_helper {
                     $(ref_into($ref_into_type))?
                     $(as_ref($as_ref_type))?
                     $(copy$(($get_copy_marker))?)?
+                    $(consume$(($get_consume_marker))?)?
+                    $(clone$(($get_clone_marker))?)?
                 )])?
                 $f_name: $f_type,
             )*
@@ -242,6 +250,7 @@ macro_rules! gen_model_helper {
             $(
                 $(#[$helper_attrs])*
                 $helper_vis struct $helper_name
+                $(<$($helper_lts)* $($helper_generics)*>)?
                 $(
                     // Additional fields required by the corresponding helper struct
                     {
@@ -250,7 +259,7 @@ macro_rules! gen_model_helper {
                             $helper_f_name: $helper_f_type,
                         )*
                     }
-                )?
+                )?;
             )*
             $(
                 $(#[doc = $($f_doc)*])*
@@ -269,6 +278,7 @@ macro_rules! gen_model_helper {
         // New entity helper.
         $(#[$new_h_attrs:meta])*
         $new_h_vis:vis struct $new_h_name:ident
+        $(<$($new_h_lts:lifetime)* $($new_h_generics:ident)*>)?
         $(
             {
                 $(
@@ -276,11 +286,12 @@ macro_rules! gen_model_helper {
                     $new_h_f_name:ident: $new_h_f_type:ty,
                 )*
             }
-        )?
+        )?;
 
         // Hydration helper.
         $(#[$hydrate_h_attrs:meta])*
         $hydrate_h_vis:vis struct $hydrate_h_name:ident
+        $(<$($hydrate_h_lts:lifetime)* $($hydrate_h_generics:ident)*>)?
         $(
             {
                 $(
@@ -288,7 +299,7 @@ macro_rules! gen_model_helper {
                     $hydrate_h_f_name:ident: $hydrate_h_f_type:ty,
                 )*
             }
-        )?
+        )?;
 
         // Model fields.
         $(
@@ -304,6 +315,7 @@ macro_rules! gen_model_helper {
             @gen-new-helper
             $(#[$new_h_attrs])*
             $new_h_vis struct $new_h_name
+            $(<$($new_h_lts)* $($new_h_generics)*>)?
             [
                 $(
                     $(
@@ -325,6 +337,7 @@ macro_rules! gen_model_helper {
             @gen-hydrate-helper
             $(#[$hydrate_h_attrs])*
             $hydrate_h_vis struct $hydrate_h_name
+            $(<$($hydrate_h_lts)* $($hydrate_h_generics)*>)?
             [
                 $(
                     $(
@@ -345,10 +358,10 @@ macro_rules! gen_model_helper {
     // Generate only the new entity helper struct.
     (
         @gen-helpers
-
         // New entity helper.
         $(#[$new_h_attrs:meta])*
         $new_h_vis:vis struct $new_h_name:ident
+        $(<$($helper_lts:lifetime)* $($helper_generics:ident)*>)?
         $(
             {
                 $(
@@ -356,7 +369,7 @@ macro_rules! gen_model_helper {
                     $new_h_f_name:ident: $new_h_f_type:ty,
                 )*
             }
-        )?
+        )?;
 
         // Model fields.
         $(
@@ -371,6 +384,7 @@ macro_rules! gen_model_helper {
             @gen-new-helper
             $(#[$new_h_attrs])*
             $new_h_vis struct $new_h_name
+            $(<$($helper_lts)* $($helper_generics)*>)?
             [
                 $(
                     $(
@@ -396,6 +410,7 @@ macro_rules! gen_model_helper {
         @gen-new-helper
         $(#[$attr:meta])*
         $vis:vis struct $name:ident
+        $(<$($lifetimes:lifetime)* $($generics:ident)*>)?
         [$($processed:tt)*]
 
         $(#[doc = $($f_doc:tt)*])*
@@ -408,6 +423,7 @@ macro_rules! gen_model_helper {
             @gen-new-helper
             $(#[$attr])*
             $vis struct $name
+            $(<$($lifetimes)* $($generics)*>)?
             [
                 $($processed)*
 
@@ -424,6 +440,7 @@ macro_rules! gen_model_helper {
         @gen-new-helper
         $(#[$attr:meta])*
         $vis:vis struct $name:ident
+        $(<$($lifetimes:lifetime)* $($generics:ident)*>)?
         [$($processed:tt)*]
 
         $(#[doc = $($f_doc:tt)*])*
@@ -437,6 +454,7 @@ macro_rules! gen_model_helper {
             @gen-new-helper
             $(#[$attr])*
             $vis struct $name
+            $(<$($lifetimes)* $($generics)*>)?
             [$($processed)*]
             $($rest)*
         );
@@ -447,6 +465,7 @@ macro_rules! gen_model_helper {
         @gen-new-helper
         $(#[$attr:meta])*
         $vis:vis struct $name:ident
+        $(<$($lifetimes:lifetime)* $($generics:ident)*>)?
         [$($processed:tt)*]
 
         $(#[doc = $($f_doc:tt)*])*
@@ -460,6 +479,7 @@ macro_rules! gen_model_helper {
             @gen-new-helper
             $(#[$attr])*
             $vis struct $name
+            $(<$($lifetimes)* $($generics)*>)?
             [
                 $($processed)*
 
@@ -476,10 +496,11 @@ macro_rules! gen_model_helper {
         @gen-new-helper
         $(#[$attr:meta])*
         $vis:vis struct $name:ident
+        $(<$($lifetimes:lifetime)* $($generics:ident)*>)?
         [$($processed:tt)*]
     ) => {
         $(#[$attr])*
-        $vis struct $name {
+        $vis struct $name $(<$($lifetimes,)* $($generics,)*>)? {
             $($processed)*
         }
     };
@@ -580,11 +601,12 @@ macro_rules! gen_model_helper {
     // Entrypoint for generating the getters.
     (
         @gen-getters
+        $(<$($model_lts:lifetime)* $($model_generics:ident)*>)?,
         $vis:vis,
         $name:ident,
         $($fields:tt)*
     ) => {
-        impl $name {
+        impl $(<$($model_lts,)* $($model_generics,)*>)? $name $(<$($model_lts,)* $($model_generics,)*>)? {
             gen_model_helper!(@gen-getter $vis, $($fields)*);
         }
     };
@@ -664,6 +686,25 @@ macro_rules! gen_model_helper {
         $vis:vis,
         $(#[doc = $($f_doc:tt)*])*
         $(#[doc($($f_doc2:tt)*)])*
+        #[get(as_ref($as_ref_ty:ty))]
+        $f_name:ident: $f_type:ty,
+        $($rest:tt)*
+    ) => {
+        $(#[doc = $($f_doc)*])*
+        $(#[doc($($f_doc2)*)])*
+        $vis fn $f_name(&self) -> $as_ref_ty {
+            self.$f_name.as_ref()
+        }
+
+        gen_model_helper!(@gen-getter $vis, $($rest)*);
+    };
+
+    // Return a copy of the field in the getter.
+    (
+        @gen-getter
+        $vis:vis,
+        $(#[doc = $($f_doc:tt)*])*
+        $(#[doc($($f_doc2:tt)*)])*
         #[get(copy)]
         $f_name:ident: $f_type:ty,
         $($rest:tt)*
@@ -677,20 +718,41 @@ macro_rules! gen_model_helper {
         gen_model_helper!(@gen-getter $vis, $($rest)*);
     };
 
-    // Return a copy of the field in the getter.
+
+    // Return the field directly, consuming `self` in the process.
     (
         @gen-getter
         $vis:vis,
         $(#[doc = $($f_doc:tt)*])*
         $(#[doc($($f_doc2:tt)*)])*
-        #[get(as_ref($as_ref_ty:ty))]
+        #[get(consume)]
         $f_name:ident: $f_type:ty,
         $($rest:tt)*
     ) => {
         $(#[doc = $($f_doc)*])*
         $(#[doc($($f_doc2)*)])*
-        $vis fn $f_name(&self) -> $as_ref_ty {
-            self.$f_name.as_ref()
+        $vis fn $f_name(self) -> $f_type {
+            self.$f_name
+        }
+
+        gen_model_helper!(@gen-getter $vis, $($rest)*);
+    };
+
+
+    // Clones the field in the getter.
+    (
+        @gen-getter
+        $vis:vis,
+        $(#[doc = $($f_doc:tt)*])*
+        $(#[doc($($f_doc2:tt)*)])*
+        #[get(clone)]
+        $f_name:ident: $f_type:ty,
+        $($rest:tt)*
+    ) => {
+        $(#[doc = $($f_doc)*])*
+        $(#[doc($($f_doc2)*)])*
+        $vis fn $f_name(&self) -> $f_type {
+            self.$f_name.clone()
         }
 
         gen_model_helper!(@gen-getter $vis, $($rest)*);

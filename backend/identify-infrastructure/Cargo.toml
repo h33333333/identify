@@ -13,8 +13,12 @@ uuid = { workspace = true }
 chrono = { workspace = true }
 async-trait = { workspace = true }
 sqlx = { workspace = true }
-identify-application = { workspace = true }
 identify-domain = { workspace = true }
+jsonwebtoken = { workspace = true }
+serde = { workspace = true }
+identify-macros = { workspace = true }
+argon2 = { workspace = true }
+identify-ports = { workspace = true }
 
 [lints]
 workspace = true
